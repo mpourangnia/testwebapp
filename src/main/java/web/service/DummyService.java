@@ -5,7 +5,6 @@ package web.service;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 
 
@@ -13,6 +12,6 @@ import java.util.Date;
 public class DummyService
 {
     public String getValue() {
-        return "JavaConfig bean time: " + new Date().toString();
+        return "JavaConfig bean time: " + LocalDateTime.now().toString();
     }
 }
