@@ -9,16 +9,18 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
 ">
+    <!--<bean class="web.config.MvcConfig"/>-->
+
     <context:component-scan base-package="web.controller"/>
 
-    <bean id="templateResolver" class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
-        <property name="prefix" value="/WEB-INF/thymeleaf/" />
+    <bean id="templateResolver" class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver">
+        <property name="prefix" value="/WEB-INF/thymeleaf/"/>
         <property name="suffix" value=".html" />
-        <property name="templateMode" value="HTML5" />
+        <property name="templateMode" value="HTML"/>
         <property name="cacheable" value="false" />
     </bean>
 
-    <bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
+    <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
         <property name="templateResolver" ref="templateResolver" />
     </bean>
 
@@ -31,7 +33,7 @@
                     <property name="order" value="1"/>
                 </bean>
 
-                <bean class="org.thymeleaf.spring3.view.ThymeleafViewResolver">
+                <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
                     <property name="templateEngine" ref="templateEngine" />
                     <property name="order" value="2"/>
                     <!-- We need to set exclusions because Content Negotiation tries to resolve from -->
