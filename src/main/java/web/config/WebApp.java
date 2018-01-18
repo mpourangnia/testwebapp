@@ -8,15 +8,9 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 public class WebApp extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-	public WebApp() {
-		super();
-	}
-
-
-
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[]{};
+		return new Class<?>[]{ SpringContextConfig.class };
 	}
 
 
@@ -30,6 +24,6 @@ public class WebApp extends AbstractAnnotationConfigDispatcherServletInitializer
 
 	@Override
 	protected String[] getServletMappings() {
-		return new String[]{"/"};
+		return new String[]{ "/" };
 	}
 }

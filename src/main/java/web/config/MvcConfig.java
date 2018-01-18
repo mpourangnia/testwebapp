@@ -12,9 +12,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 
@@ -22,7 +22,6 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackageClasses = {
-		web.service.DummyService.class,
 		web.controller.DummyController.class,
 })
 public class MvcConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
@@ -38,12 +37,10 @@ public class MvcConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
 
 	@Bean
-	public ViewResolver htmlViewResolver() {
+	public ViewResolver thymeLeafViewResolver() {
 		ThymeleafViewResolver resolver = new ThymeleafViewResolver();
 		resolver.setTemplateEngine(templateEngine(htmlTemplateResolver()));
-		resolver.setContentType("text/html");
 		resolver.setCharacterEncoding("UTF-8");
-		resolver.setViewNames(new String[]{"*.html"});
 		return resolver;
 	}
 
@@ -58,70 +55,19 @@ public class MvcConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
 
 	private ITemplateResolver htmlTemplateResolver() {
-		SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-		resolver.setApplicationContext(applicationContext);
-		resolver.setPrefix("/WEB-INF/views/");
-		resolver.setCacheable(false);
-		resolver.setTemplateMode(TemplateMode.HTML);
-		return resolver;
-	}
+		// detta funkar med code completion i Intellij
+		// men i en jar-modul finns inte WEB-INF-katalogen
+//		SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+//		resolver.setApplicationContext(applicationContext);
+//		resolver.setPrefix("/WEB-INF/views/");
 
-
-
-/*
-	@Bean
-	public ITemplateResolver templateResolver() {
+		// detta funkar inte med code completion i Intellij
 		ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
 		resolver.setPrefix("/templates/");
+
 		resolver.setSuffix(".html");
-		resolver.setTemplateMode("HTML");
-		resolver.setTemplateMode(TemplateMode.HTML);
 		resolver.setCacheable(false);
+		resolver.setTemplateMode(TemplateMode.HTML);
 		return resolver;
 	}
-
-
-
-	@Bean
-	public SpringTemplateEngine templateEngine() {
-		SpringTemplateEngine engine = new SpringTemplateEngine();
-		engine.setEnableSpringELCompiler(true);
-		engine.setTemplateResolver(templateResolver());
-		return engine;
-	}
-
-
-
-	@Bean
-	public ViewResolver viewResolver() {
-		ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
-		List<ViewResolver> resolvers = Arrays.asList(
-				beanNameViewResolver(),
-				thymeLeafViewResolver()
-		);
-		resolver.setViewResolvers(resolvers);
-		return resolver;
-	}
-
-
-
-	@Bean
-	public ViewResolver beanNameViewResolver() {
-		BeanNameViewResolver resolver = new BeanNameViewResolver();
-		resolver.setOrder(1);
-		return resolver;
-	}
-
-
-
-	@Bean
-	public ViewResolver thymeLeafViewResolver() {
-		ThymeleafViewResolver resolver = new ThymeleafViewResolver();
-		resolver.setOrder(2);
-		resolver.setTemplateEngine(templateEngine());
-		resolver.setCharacterEncoding("UTF-8");
-		resolver.setExcludedViewNames(new String[]{ "*.xml" });
-		return resolver;
-	}
-*/
 }
