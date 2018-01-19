@@ -9,12 +9,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 
@@ -24,7 +23,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @ComponentScan(basePackageClasses = {
 		web.controller.DummyController.class,
 })
-public class MvcConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
+public class MvcConfig implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
 
@@ -55,15 +54,15 @@ public class MvcConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 
 
 	private ITemplateResolver htmlTemplateResolver() {
-		// detta funkar med code completion i Intellij
-		// men i en jar-modul finns inte WEB-INF-katalogen
-//		SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
-//		resolver.setApplicationContext(applicationContext);
-//		resolver.setPrefix("/WEB-INF/views/");
+		// detta funkar med code completion i Intellij,
+		// men i en jar-modul saknas WEB-INF-katalogen
+		SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
+		resolver.setApplicationContext(applicationContext);
+		resolver.setPrefix("/WEB-INF/views/");
 
 		// detta funkar inte med code completion i Intellij
-		ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
-		resolver.setPrefix("/templates/");
+//		ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
+//		resolver.setPrefix("/templates/");
 
 		resolver.setSuffix(".html");
 		resolver.setCacheable(false);
