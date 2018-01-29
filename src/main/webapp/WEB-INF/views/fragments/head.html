@@ -1,6 +1,13 @@
 <html xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
-    <head th:fragment="head">
-        <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
-        <script th:src="@{/js/jscripts.js}"></script>
-    </head>
+<head th:fragment="head">
+    <title>fragmenttitel</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css"/>
+    <link rel="stylesheet" th:href="@{'/css/style.' + ${@environment.activeProfiles[0]} + '.css'}" type="text/css"/>
+    <script th:src="@{/js/jscripts.js}"></script>
+    <script th:src="@{/js/overlib.js}"></script>
+    <script>
+        window.history.forward();
+        // var hrefHassanBase='servervariableln contextPath';
+    </script>
+</head>
 </html>
