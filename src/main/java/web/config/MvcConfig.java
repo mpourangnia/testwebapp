@@ -9,6 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
@@ -23,7 +25,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @ComponentScan(basePackageClasses = {
 		web.controller.DummyController.class,
 })
-public class MvcConfig implements ApplicationContextAware {
+public class MvcConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
 
@@ -31,6 +33,22 @@ public class MvcConfig implements ApplicationContextAware {
 
 	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
+	}
+
+
+
+	@Override
+	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
+		super.addResourceHandlers(registry);
+
+		registry.addResourceHandler("/img/**")
+				.addResourceLocations("classpath:/static/img/");
+
+		registry.addResourceHandler("/css/**")
+				.addResourceLocations("classpath:/static/css/");
+
+		registry.addResourceHandler("/js/**")
+				.addResourceLocations("classpath:/static/js/");
 	}
 
 
@@ -45,7 +63,8 @@ public class MvcConfig implements ApplicationContextAware {
 
 
 
-	private TemplateEngine templateEngine(ITemplateResolver templateResolver) {
+	@Bean
+	public TemplateEngine templateEngine(ITemplateResolver templateResolver) {
 		SpringTemplateEngine engine = new SpringTemplateEngine();
 		engine.setTemplateResolver(templateResolver);
 		return engine;
@@ -53,17 +72,11 @@ public class MvcConfig implements ApplicationContextAware {
 
 
 
-	private ITemplateResolver htmlTemplateResolver() {
-		// detta funkar med code completion i Intellij,
-		// men i en jar-modul saknas WEB-INF-katalogen
+	@Bean
+	public ITemplateResolver htmlTemplateResolver() {
 		SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
 		resolver.setApplicationContext(applicationContext);
 		resolver.setPrefix("/WEB-INF/views/");
-
-		// detta funkar inte med code completion i Intellij
-//		ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
-//		resolver.setPrefix("/templates/");
-
 		resolver.setSuffix(".html");
 		resolver.setCacheable(false);
 		resolver.setTemplateMode(TemplateMode.HTML);

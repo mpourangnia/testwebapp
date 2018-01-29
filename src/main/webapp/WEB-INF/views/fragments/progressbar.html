@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>progressbar</title>
+</head>
+<body>
+<div th:fragment="progressBarStart">
+    <div id="progressbar" style="display:none; z-index:1002; padding:0;">
+        <TABLE border="0" style="z-index:1002;border:solid black 2px;background-color: #ffffff;">
+            <TR>
+                <TH align="center">
+                    <div id="hassanProgressBar" align="left" style="font-size: xx-small;" class="disabled">
+                        <span th:text="#{message.progressbar.working}"></span>
+                    </div>
+                    <div id="prequeststatus"></div>
+                </TH>
+            </TR>
+            <TR>
+                <TD align="center" nowrap="nowrap">
+                    <span id="progress1">&nbsp; &nbsp;</span>
+                    <span id="progress2">&nbsp; &nbsp;</span>
+                    <span id="progress3">&nbsp; &nbsp;</span>
+                    <span id="progress4">&nbsp; &nbsp;</span>
+                    <span id="progress5">&nbsp; &nbsp;</span>
+                    <span id="progress6">&nbsp; &nbsp;</span>
+                    <span id="progress7">&nbsp; &nbsp;</span>
+                    <span id="progress8">&nbsp; &nbsp;</span>
+                    <span id="progress9">&nbsp; &nbsp;</span>
+                </TD>
+            </TR>
+        </TABLE>
+    </div>
+    <div id="progressback" style="display:none; background-color: #7F7F7F; z-index:1001;padding:0;"></div>
+
+    <script language="javascript" th:src="@{/js/progressbar.js}"></script>
+    <script language="javascript">
+        navigator.runstatus9823 = false;
+        navigator.progresswarn = "[[#{message.progressbar.working}]]";
+    </script>
+</div>
+
+<div th:fragment="progressBarEnd">
+    <script language="javascript">
+        progressStop();
+    </script>
+</div>
+</body>
+</html>
